@@ -1,4 +1,4 @@
-FROM grafana/grafana:5.4.2
+FROM grafana/grafana:6.3.0-beta2
 
 USER root
 
@@ -9,6 +9,7 @@ WORKDIR /etc/grafana
 COPY datasources ./datasources
 COPY dashboard/dashboards.yaml /etc/grafana/provisioning/dashboards
 COPY dashboard/gatling-dashboard.json /etc/grafana/provisioning/dashboards
+COPY dashboard/gatling-report-dashboard.json /etc/grafana/provisioning/dashboards
 
 WORKDIR /app
 COPY entrypoint.sh ./

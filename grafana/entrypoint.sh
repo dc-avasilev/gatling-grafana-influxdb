@@ -8,6 +8,9 @@ post() {
         "$url$2" 2> /dev/null
 }
 
+apt update
+apt install lsof
+
 if [ ! -f "/var/lib/grafana/.init" ]; then
     exec /run.sh $@ &
 
@@ -21,7 +24,7 @@ if [ ! -f "/var/lib/grafana/.init" ]; then
 
     touch "/var/lib/grafana/.init"
 
-    kill $(pgrep grafana)
+    kill -s TERM $(lsof -i | grep 3000 | awk '{print $2}')
 fi
 
 exec /run.sh $@
