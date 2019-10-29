@@ -1,4 +1,40 @@
 {
+    "__inputs": [
+        {
+            "name": "DS_GATLING",
+            "label": "Gatling",
+            "description": "Standard datasourse: https://gatling.io/docs/2.3/realtime_monitoring/",
+            "type": "datasource",
+            "pluginId": "influxdb",
+            "pluginName": "InfluxDB"
+        }
+    ],
+    "__requires": [
+        {
+            "type": "grafana",
+            "id": "grafana",
+            "name": "Grafana",
+            "version": "5.2.1"
+        },
+        {
+            "type": "panel",
+            "id": "graph",
+            "name": "Graph",
+            "version": "5.0.0"
+        },
+        {
+            "type": "datasource",
+            "id": "influxdb",
+            "name": "InfluxDB",
+            "version": "5.0.0"
+        },
+        {
+            "type": "panel",
+            "id": "table",
+            "name": "Table",
+            "version": "5.0.0"
+        }
+    ],
     "annotations": {
         "list": [
             {
@@ -17,16 +53,15 @@
             }
         ]
     },
-    "description": "Gatling dashboard with parameters: granularity (1s, 5s, ...) and request filter",
     "editable": true,
     "gnetId": 9935,
     "graphTooltip": 0,
-    "id": 2,
-    "iteration": 1571145301844,
+    "id": null,
+    "iteration": 1552830202130,
     "links": [],
     "panels": [
         {
-            "collapsed": false,
+            "collapsed": true,
             "gridPos": {
                 "h": 1,
                 "w": 24,
@@ -34,1219 +69,1219 @@
                 "y": 0
             },
             "id": 56,
-            "panels": [],
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": true,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_GATLING}",
+                    "fill": 1,
+                    "gridPos": {
+                        "h": 15,
+                        "w": 24,
+                        "x": 0,
+                        "y": 1
+                    },
+                    "id": 19,
+                    "legend": {
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "show": false,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": false,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "t < 800 ms",
+                            "color": "#629e51"
+                        },
+                        {
+                            "alias": "800 ms < t < 1200 ms",
+                            "color": "#f2c96d"
+                        },
+                        {
+                            "alias": "t > 1200 ms",
+                            "color": "#ef843c"
+                        },
+                        {
+                            "alias": "failed",
+                            "color": "#bf1b00"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "alias": "t < 800 ms",
+                            "groupBy": [],
+                            "measurement": "gatling",
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT sum(\"count\") FROM \"gatling\" WHERE $timeFilter and \"mean\" <= 800 and \"status\" = 'ok' and \"request\" = 'allRequests'",
+                            "rawQuery": true,
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "count"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "sum"
+                                    }
+                                ]
+                            ],
+                            "tags": []
+                        },
+                        {
+                            "alias": "800 ms < t < 1200 ms",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$__interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT sum(\"count\") FROM \"gatling\" WHERE $timeFilter and \"mean\" > 800 and \"mean\" <= 1200 and \"status\" = 'ok' and \"request\" = 'allRequests'",
+                            "rawQuery": true,
+                            "refId": "B",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "value"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    }
+                                ]
+                            ],
+                            "tags": []
+                        },
+                        {
+                            "alias": "t > 1200 ms",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$__interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT sum(\"count\") FROM \"gatling\" WHERE $timeFilter and \"mean\" > 1200 and \"status\" = 'ok' and \"request\" = 'allRequests'",
+                            "rawQuery": true,
+                            "refId": "C",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "value"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    }
+                                ]
+                            ],
+                            "tags": []
+                        },
+                        {
+                            "alias": "failed",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$__interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "null"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT sum(\"count\") FROM \"gatling\" WHERE $timeFilter and \"status\" = 'ko' and \"request\" = 'allRequests'",
+                            "rawQuery": true,
+                            "refId": "D",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "value"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    }
+                                ]
+                            ],
+                            "tags": []
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Indicators",
+                    "tooltip": {
+                        "shared": false,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": 10,
+                        "mode": "series",
+                        "name": null,
+                        "show": true,
+                        "values": [
+                            "total"
+                        ]
+                    },
+                    "yaxes": [
+                        {
+                            "format": "none",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": true,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "columns": [],
+                    "datasource": "${DS_GATLING}",
+                    "fontSize": "100%",
+                    "gridPos": {
+                        "h": 31,
+                        "w": 24,
+                        "x": 0,
+                        "y": 16
+                    },
+                    "id": 21,
+                    "links": [],
+                    "pageSize": null,
+                    "scroll": true,
+                    "showHeader": true,
+                    "sort": {
+                        "col": 5,
+                        "desc": true
+                    },
+                    "styles": [
+                        {
+                            "alias": "Time",
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "pattern": "Time",
+                            "type": "hidden"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "Total",
+                            "thresholds": [],
+                            "type": "number",
+                            "unit": "none"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "cell",
+                            "colors": [
+                                "#7eb26d",
+                                "#7eb26d",
+                                "#7eb26d"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "OK",
+                            "thresholds": [],
+                            "type": "number",
+                            "unit": "none"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "cell",
+                            "colors": [
+                                "#e24d42",
+                                "#e24d42",
+                                "#e24d42"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "KO",
+                            "thresholds": [],
+                            "type": "number",
+                            "unit": "none"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "value",
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(245, 54, 54, 0.9)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "Mean",
+                            "thresholds": [
+                                "800",
+                                "1200"
+                            ],
+                            "type": "number",
+                            "unit": "ms"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "value",
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(245, 54, 54, 0.9)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "Max",
+                            "thresholds": [
+                                "800",
+                                "1200"
+                            ],
+                            "type": "number",
+                            "unit": "ms"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "value",
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(245, 54, 54, 0.9)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "Min",
+                            "thresholds": [
+                                "800",
+                                "1200"
+                            ],
+                            "type": "number",
+                            "unit": "ms"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "value",
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(245, 54, 54, 0.9)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "50th pct",
+                            "thresholds": [
+                                "800",
+                                "1200"
+                            ],
+                            "type": "number",
+                            "unit": "ms"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "value",
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(245, 54, 54, 0.9)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "75th pct",
+                            "thresholds": [
+                                "800",
+                                "1200"
+                            ],
+                            "type": "number",
+                            "unit": "ms"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "value",
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(245, 54, 54, 0.9)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "95th pct",
+                            "thresholds": [
+                                "800",
+                                "1200"
+                            ],
+                            "type": "number",
+                            "unit": "ms"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "value",
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(245, 54, 54, 0.9)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "99th pct",
+                            "thresholds": [
+                                "800",
+                                "1200"
+                            ],
+                            "type": "number",
+                            "unit": "ms"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": "value",
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(245, 54, 54, 0.9)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 0,
+                            "mappingType": 1,
+                            "pattern": "Std Dev",
+                            "thresholds": [
+                                "800",
+                                "1200"
+                            ],
+                            "type": "number",
+                            "unit": "none"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 2,
+                            "mappingType": 2,
+                            "pattern": "simulation",
+                            "preserveFormat": false,
+                            "rangeMaps": [],
+                            "thresholds": [],
+                            "type": "hidden",
+                            "unit": "short",
+                            "valueMaps": []
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "decimals": 2,
+                            "pattern": "/.*/",
+                            "thresholds": [],
+                            "type": "number",
+                            "unit": "short"
+                        }
+                    ],
+                    "targets": [
+                        {
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "simulation"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group1"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group2"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "request"
+                                    ],
+                                    "type": "tag"
+                                }
+                            ],
+                            "hide": false,
+                            "measurement": "gatling",
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT \"simulation\" as \"1. simulation\", * FROM (  SELECT sum(\"count\") AS \"Total\" FROM \"gatling\" WHERE (\"status\" = 'all') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\" ) GROUP BY \"1. simulation\" , \"group1\", \"group2\", \"request\"",
+                            "rawQuery": true,
+                            "refId": "A",
+                            "resultFormat": "table",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "count"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "sum"
+                                    },
+                                    {
+                                        "params": [
+                                            "Total"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "status",
+                                    "operator": "=",
+                                    "value": "all"
+                                }
+                            ]
+                        },
+                        {
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "simulation"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group1"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group2"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "request"
+                                    ],
+                                    "type": "tag"
+                                }
+                            ],
+                            "hide": false,
+                            "measurement": "gatling",
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT \"simulation\" as \"1. simulation\", * FROM ( SELECT sum(\"count\") AS \"OK\" FROM \"gatling\" WHERE (\"status\" = 'ok') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\" ) GROUP BY \"1. simulation\" , \"group1\", \"group2\", \"request\"",
+                            "rawQuery": true,
+                            "refId": "B",
+                            "resultFormat": "table",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "count"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "sum"
+                                    },
+                                    {
+                                        "params": [
+                                            "OK"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "status",
+                                    "operator": "=",
+                                    "value": "ok"
+                                }
+                            ]
+                        },
+                        {
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "simulation"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group1"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group2"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "request"
+                                    ],
+                                    "type": "tag"
+                                }
+                            ],
+                            "hide": false,
+                            "measurement": "gatling",
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT \"simulation\" as \"1. simulation\", * FROM ( SELECT sum(\"count\") AS \"KO\" FROM \"gatling\" WHERE (\"status\" = 'ko') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\") GROUP BY \"1. simulation\" , \"group1\", \"group2\", \"request\"",
+                            "rawQuery": true,
+                            "refId": "C",
+                            "resultFormat": "table",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "count"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "sum"
+                                    },
+                                    {
+                                        "params": [
+                                            "KO"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "status",
+                                    "operator": "=",
+                                    "value": "ko"
+                                }
+                            ]
+                        },
+                        {
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "simulation"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group1"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group2"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "request"
+                                    ],
+                                    "type": "tag"
+                                }
+                            ],
+                            "hide": false,
+                            "measurement": "gatling",
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT \"simulation\" as \"1. simulation\", * FROM ( SELECT min(\"min\") AS \"Min\", percentile(\"percentiles50\", 50) AS \"50th pct\", percentile(\"percentiles75\", 75) AS \"75th pct\", percentile(\"percentiles95\", 95) AS \"95th pct\", percentile(\"percentiles99\", 99) AS \"99th pct\", max(\"max\") AS \"Max\", mean(\"mean\") AS \"Mean\", stddev(\"mean\") AS \"Std Dev\" FROM \"gatling\" WHERE (\"status\" = 'all') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\" ) GROUP BY \"1. simulation\" , \"group1\", \"group2\", \"request\"",
+                            "rawQuery": true,
+                            "refId": "D",
+                            "resultFormat": "table",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "min"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "min"
+                                    },
+                                    {
+                                        "params": [
+                                            "Min"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "percentiles50"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [
+                                            "50"
+                                        ],
+                                        "type": "percentile"
+                                    },
+                                    {
+                                        "params": [
+                                            "50th pct"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "percentiles75"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [
+                                            "75"
+                                        ],
+                                        "type": "percentile"
+                                    },
+                                    {
+                                        "params": [
+                                            "75th pct"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "percentiles95"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [
+                                            "95"
+                                        ],
+                                        "type": "percentile"
+                                    },
+                                    {
+                                        "params": [
+                                            "95th pct"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "percentiles99"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [
+                                            "99"
+                                        ],
+                                        "type": "percentile"
+                                    },
+                                    {
+                                        "params": [
+                                            "99th pct"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "max"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "max"
+                                    },
+                                    {
+                                        "params": [
+                                            "Max"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "mean"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    },
+                                    {
+                                        "params": [
+                                            "Mean"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "mean"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "stddev"
+                                    },
+                                    {
+                                        "params": [
+                                            "Std Dev"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "status",
+                                    "operator": "=",
+                                    "value": "all"
+                                }
+                            ]
+                        },
+                        {
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "simulation"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group1"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group2"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "request"
+                                    ],
+                                    "type": "tag"
+                                }
+                            ],
+                            "hide": true,
+                            "measurement": "gatling",
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT sum(\"count\") AS \"Total\" FROM \"gatling\" WHERE (\"status\" = 'all') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\"",
+                            "rawQuery": false,
+                            "refId": "E",
+                            "resultFormat": "table",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "count"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "sum"
+                                    },
+                                    {
+                                        "params": [
+                                            "Total"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "status",
+                                    "operator": "=",
+                                    "value": "all"
+                                }
+                            ]
+                        },
+                        {
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "simulation"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group1"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group2"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "request"
+                                    ],
+                                    "type": "tag"
+                                }
+                            ],
+                            "hide": true,
+                            "measurement": "gatling",
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "refId": "F",
+                            "resultFormat": "table",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "count"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "sum"
+                                    },
+                                    {
+                                        "params": [
+                                            "OK"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "status",
+                                    "operator": "=",
+                                    "value": "ok"
+                                }
+                            ]
+                        },
+                        {
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "simulation"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group1"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "group2"
+                                    ],
+                                    "type": "tag"
+                                },
+                                {
+                                    "params": [
+                                        "request"
+                                    ],
+                                    "type": "tag"
+                                }
+                            ],
+                            "hide": true,
+                            "measurement": "gatling",
+                            "orderByTime": "ASC",
+                            "policy": "default",
+                            "query": "SELECT min(\"min\") AS \"Min\", percentile(\"percentiles50\", 50) AS \"50th pct\", percentile(\"percentiles75\", 75) AS \"75th pct\", percentile(\"percentiles95\", 95) AS \"95th pct\", percentile(\"percentiles99\", 99) AS \"99th pct\", max(\"max\") AS \"Max\", mean(\"mean\") AS \"Mean\", stddev(\"percentiles75\") AS \"Std Dev\" FROM \"gatling\" WHERE (\"status\" = 'all') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\"",
+                            "rawQuery": false,
+                            "refId": "G",
+                            "resultFormat": "table",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "min"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "min"
+                                    },
+                                    {
+                                        "params": [
+                                            "Min"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "percentiles50"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [
+                                            "50"
+                                        ],
+                                        "type": "percentile"
+                                    },
+                                    {
+                                        "params": [
+                                            "50th pct"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "percentiles75"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [
+                                            "75"
+                                        ],
+                                        "type": "percentile"
+                                    },
+                                    {
+                                        "params": [
+                                            "75th pct"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "percentiles95"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [
+                                            "95"
+                                        ],
+                                        "type": "percentile"
+                                    },
+                                    {
+                                        "params": [
+                                            "95th pct"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "percentiles99"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [
+                                            "99"
+                                        ],
+                                        "type": "percentile"
+                                    },
+                                    {
+                                        "params": [
+                                            "99th pct"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "max"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "max"
+                                    },
+                                    {
+                                        "params": [
+                                            "Max"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "mean"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    },
+                                    {
+                                        "params": [
+                                            "Mean"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "params": [
+                                            "mean"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "stddev"
+                                    },
+                                    {
+                                        "params": [
+                                            "Std Dev"
+                                        ],
+                                        "type": "alias"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "status",
+                                    "operator": "=",
+                                    "value": "all"
+                                }
+                            ]
+                        }
+                    ],
+                    "title": "Statistics",
+                    "transform": "table",
+                    "type": "table"
+                }
+            ],
             "title": "Inducators and Statistics",
             "type": "row"
-        },
-        {
-            "aliasColors": {},
-            "bars": true,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "InfluxDB",
-            "fill": 1,
-            "gridPos": {
-                "h": 15,
-                "w": 24,
-                "x": 0,
-                "y": 1
-            },
-            "id": 19,
-            "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": false,
-                "total": false,
-                "values": false
-            },
-            "lines": false,
-            "linewidth": 1,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "t < 800 ms",
-                    "color": "#629e51"
-                },
-                {
-                    "alias": "800 ms < t < 1200 ms",
-                    "color": "#f2c96d"
-                },
-                {
-                    "alias": "t > 1200 ms",
-                    "color": "#ef843c"
-                },
-                {
-                    "alias": "failed",
-                    "color": "#bf1b00"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "alias": "t < 800 ms",
-                    "groupBy": [],
-                    "measurement": "gatling",
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT sum(\"count\") FROM \"gatling\" WHERE $timeFilter and \"mean\" <= 800 and \"status\" = 'ok' and \"request\" = 'allRequests'",
-                    "rawQuery": true,
-                    "refId": "A",
-                    "resultFormat": "time_series",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "count"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "sum"
-                            }
-                        ]
-                    ],
-                    "tags": []
-                },
-                {
-                    "alias": "800 ms < t < 1200 ms",
-                    "groupBy": [
-                        {
-                            "params": [
-                                "$__interval"
-                            ],
-                            "type": "time"
-                        },
-                        {
-                            "params": [
-                                "null"
-                            ],
-                            "type": "fill"
-                        }
-                    ],
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT sum(\"count\") FROM \"gatling\" WHERE $timeFilter and \"mean\" > 800 and \"mean\" <= 1200 and \"status\" = 'ok' and \"request\" = 'allRequests'",
-                    "rawQuery": true,
-                    "refId": "B",
-                    "resultFormat": "time_series",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "value"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "mean"
-                            }
-                        ]
-                    ],
-                    "tags": []
-                },
-                {
-                    "alias": "t > 1200 ms",
-                    "groupBy": [
-                        {
-                            "params": [
-                                "$__interval"
-                            ],
-                            "type": "time"
-                        },
-                        {
-                            "params": [
-                                "null"
-                            ],
-                            "type": "fill"
-                        }
-                    ],
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT sum(\"count\") FROM \"gatling\" WHERE $timeFilter and \"mean\" > 1200 and \"status\" = 'ok' and \"request\" = 'allRequests'",
-                    "rawQuery": true,
-                    "refId": "C",
-                    "resultFormat": "time_series",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "value"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "mean"
-                            }
-                        ]
-                    ],
-                    "tags": []
-                },
-                {
-                    "alias": "failed",
-                    "groupBy": [
-                        {
-                            "params": [
-                                "$__interval"
-                            ],
-                            "type": "time"
-                        },
-                        {
-                            "params": [
-                                "null"
-                            ],
-                            "type": "fill"
-                        }
-                    ],
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT sum(\"count\") FROM \"gatling\" WHERE $timeFilter and \"status\" = 'ko' and \"request\" = 'allRequests'",
-                    "rawQuery": true,
-                    "refId": "D",
-                    "resultFormat": "time_series",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "value"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "mean"
-                            }
-                        ]
-                    ],
-                    "tags": []
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Indicators",
-            "tooltip": {
-                "shared": false,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": 10,
-                "mode": "series",
-                "name": null,
-                "show": true,
-                "values": [
-                    "total"
-                ]
-            },
-            "yaxes": [
-                {
-                    "format": "none",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": true,
-                "alignLevel": null
-            }
-        },
-        {
-            "columns": [],
-            "datasource": "InfluxDB",
-            "fontSize": "100%",
-            "gridPos": {
-                "h": 31,
-                "w": 24,
-                "x": 0,
-                "y": 16
-            },
-            "id": 21,
-            "links": [],
-            "pageSize": null,
-            "scroll": true,
-            "showHeader": true,
-            "sort": {
-                "col": 5,
-                "desc": true
-            },
-            "styles": [
-                {
-                    "alias": "Time",
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "pattern": "Time",
-                    "type": "hidden"
-                },
-                {
-                    "alias": "",
-                    "colorMode": null,
-                    "colors": [
-                        "rgba(245, 54, 54, 0.9)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(50, 172, 45, 0.97)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "Total",
-                    "thresholds": [],
-                    "type": "number",
-                    "unit": "none"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "cell",
-                    "colors": [
-                        "#7eb26d",
-                        "#7eb26d",
-                        "#7eb26d"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "OK",
-                    "thresholds": [],
-                    "type": "number",
-                    "unit": "none"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "cell",
-                    "colors": [
-                        "#e24d42",
-                        "#e24d42",
-                        "#e24d42"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "KO",
-                    "thresholds": [],
-                    "type": "number",
-                    "unit": "none"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "value",
-                    "colors": [
-                        "rgba(50, 172, 45, 0.97)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(245, 54, 54, 0.9)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "Mean",
-                    "thresholds": [
-                        "800",
-                        "1200"
-                    ],
-                    "type": "number",
-                    "unit": "ms"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "value",
-                    "colors": [
-                        "rgba(50, 172, 45, 0.97)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(245, 54, 54, 0.9)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "Max",
-                    "thresholds": [
-                        "800",
-                        "1200"
-                    ],
-                    "type": "number",
-                    "unit": "ms"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "value",
-                    "colors": [
-                        "rgba(50, 172, 45, 0.97)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(245, 54, 54, 0.9)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "Min",
-                    "thresholds": [
-                        "800",
-                        "1200"
-                    ],
-                    "type": "number",
-                    "unit": "ms"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "value",
-                    "colors": [
-                        "rgba(50, 172, 45, 0.97)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(245, 54, 54, 0.9)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "50th pct",
-                    "thresholds": [
-                        "800",
-                        "1200"
-                    ],
-                    "type": "number",
-                    "unit": "ms"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "value",
-                    "colors": [
-                        "rgba(50, 172, 45, 0.97)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(245, 54, 54, 0.9)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "75th pct",
-                    "thresholds": [
-                        "800",
-                        "1200"
-                    ],
-                    "type": "number",
-                    "unit": "ms"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "value",
-                    "colors": [
-                        "rgba(50, 172, 45, 0.97)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(245, 54, 54, 0.9)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "95th pct",
-                    "thresholds": [
-                        "800",
-                        "1200"
-                    ],
-                    "type": "number",
-                    "unit": "ms"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "value",
-                    "colors": [
-                        "rgba(50, 172, 45, 0.97)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(245, 54, 54, 0.9)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "99th pct",
-                    "thresholds": [
-                        "800",
-                        "1200"
-                    ],
-                    "type": "number",
-                    "unit": "ms"
-                },
-                {
-                    "alias": "",
-                    "colorMode": "value",
-                    "colors": [
-                        "rgba(50, 172, 45, 0.97)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(245, 54, 54, 0.9)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 0,
-                    "mappingType": 1,
-                    "pattern": "Std Dev",
-                    "thresholds": [
-                        "800",
-                        "1200"
-                    ],
-                    "type": "number",
-                    "unit": "none"
-                },
-                {
-                    "alias": "",
-                    "colorMode": null,
-                    "colors": [
-                        "rgba(245, 54, 54, 0.9)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(50, 172, 45, 0.97)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 2,
-                    "mappingType": 2,
-                    "pattern": "simulation",
-                    "preserveFormat": false,
-                    "rangeMaps": [],
-                    "thresholds": [],
-                    "type": "hidden",
-                    "unit": "short",
-                    "valueMaps": []
-                },
-                {
-                    "alias": "",
-                    "colorMode": null,
-                    "colors": [
-                        "rgba(245, 54, 54, 0.9)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(50, 172, 45, 0.97)"
-                    ],
-                    "decimals": 2,
-                    "pattern": "/.*/",
-                    "thresholds": [],
-                    "type": "number",
-                    "unit": "short"
-                }
-            ],
-            "targets": [
-                {
-                    "groupBy": [
-                        {
-                            "params": [
-                                "simulation"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group1"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group2"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "request"
-                            ],
-                            "type": "tag"
-                        }
-                    ],
-                    "hide": false,
-                    "measurement": "gatling",
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT \"simulation\" as \"1. simulation\", * FROM (  SELECT sum(\"count\") AS \"Total\" FROM \"gatling\" WHERE (\"status\" = 'all') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\" ) GROUP BY \"1. simulation\" , \"group1\", \"group2\", \"request\"",
-                    "rawQuery": true,
-                    "refId": "A",
-                    "resultFormat": "table",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "count"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "sum"
-                            },
-                            {
-                                "params": [
-                                    "Total"
-                                ],
-                                "type": "alias"
-                            }
-                        ]
-                    ],
-                    "tags": [
-                        {
-                            "key": "status",
-                            "operator": "=",
-                            "value": "all"
-                        }
-                    ]
-                },
-                {
-                    "groupBy": [
-                        {
-                            "params": [
-                                "simulation"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group1"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group2"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "request"
-                            ],
-                            "type": "tag"
-                        }
-                    ],
-                    "hide": false,
-                    "measurement": "gatling",
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT \"simulation\" as \"1. simulation\", * FROM ( SELECT sum(\"count\") AS \"OK\" FROM \"gatling\" WHERE (\"status\" = 'ok') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\" ) GROUP BY \"1. simulation\" , \"group1\", \"group2\", \"request\"",
-                    "rawQuery": true,
-                    "refId": "B",
-                    "resultFormat": "table",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "count"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "sum"
-                            },
-                            {
-                                "params": [
-                                    "OK"
-                                ],
-                                "type": "alias"
-                            }
-                        ]
-                    ],
-                    "tags": [
-                        {
-                            "key": "status",
-                            "operator": "=",
-                            "value": "ok"
-                        }
-                    ]
-                },
-                {
-                    "groupBy": [
-                        {
-                            "params": [
-                                "simulation"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group1"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group2"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "request"
-                            ],
-                            "type": "tag"
-                        }
-                    ],
-                    "hide": false,
-                    "measurement": "gatling",
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT \"simulation\" as \"1. simulation\", * FROM ( SELECT sum(\"count\") AS \"KO\" FROM \"gatling\" WHERE (\"status\" = 'ko') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\") GROUP BY \"1. simulation\" , \"group1\", \"group2\", \"request\"",
-                    "rawQuery": true,
-                    "refId": "C",
-                    "resultFormat": "table",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "count"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "sum"
-                            },
-                            {
-                                "params": [
-                                    "KO"
-                                ],
-                                "type": "alias"
-                            }
-                        ]
-                    ],
-                    "tags": [
-                        {
-                            "key": "status",
-                            "operator": "=",
-                            "value": "ko"
-                        }
-                    ]
-                },
-                {
-                    "groupBy": [
-                        {
-                            "params": [
-                                "simulation"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group1"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group2"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "request"
-                            ],
-                            "type": "tag"
-                        }
-                    ],
-                    "hide": false,
-                    "measurement": "gatling",
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT \"simulation\" as \"1. simulation\", * FROM ( SELECT min(\"min\") AS \"Min\", percentile(\"percentiles50\", 50) AS \"50th pct\", percentile(\"percentiles75\", 75) AS \"75th pct\", percentile(\"percentiles95\", 95) AS \"95th pct\", percentile(\"percentiles99\", 99) AS \"99th pct\", max(\"max\") AS \"Max\", mean(\"mean\") AS \"Mean\", stddev(\"mean\") AS \"Std Dev\" FROM \"gatling\" WHERE (\"status\" = 'all') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\" ) GROUP BY \"1. simulation\" , \"group1\", \"group2\", \"request\"",
-                    "rawQuery": true,
-                    "refId": "D",
-                    "resultFormat": "table",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "min"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "min"
-                            },
-                            {
-                                "params": [
-                                    "Min"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "percentiles50"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [
-                                    "50"
-                                ],
-                                "type": "percentile"
-                            },
-                            {
-                                "params": [
-                                    "50th pct"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "percentiles75"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [
-                                    "75"
-                                ],
-                                "type": "percentile"
-                            },
-                            {
-                                "params": [
-                                    "75th pct"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "percentiles95"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [
-                                    "95"
-                                ],
-                                "type": "percentile"
-                            },
-                            {
-                                "params": [
-                                    "95th pct"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "percentiles99"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [
-                                    "99"
-                                ],
-                                "type": "percentile"
-                            },
-                            {
-                                "params": [
-                                    "99th pct"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "max"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "max"
-                            },
-                            {
-                                "params": [
-                                    "Max"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "mean"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "mean"
-                            },
-                            {
-                                "params": [
-                                    "Mean"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "mean"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "stddev"
-                            },
-                            {
-                                "params": [
-                                    "Std Dev"
-                                ],
-                                "type": "alias"
-                            }
-                        ]
-                    ],
-                    "tags": [
-                        {
-                            "key": "status",
-                            "operator": "=",
-                            "value": "all"
-                        }
-                    ]
-                },
-                {
-                    "groupBy": [
-                        {
-                            "params": [
-                                "simulation"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group1"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group2"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "request"
-                            ],
-                            "type": "tag"
-                        }
-                    ],
-                    "hide": true,
-                    "measurement": "gatling",
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT sum(\"count\") AS \"Total\" FROM \"gatling\" WHERE (\"status\" = 'all') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\"",
-                    "rawQuery": false,
-                    "refId": "E",
-                    "resultFormat": "table",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "count"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "sum"
-                            },
-                            {
-                                "params": [
-                                    "Total"
-                                ],
-                                "type": "alias"
-                            }
-                        ]
-                    ],
-                    "tags": [
-                        {
-                            "key": "status",
-                            "operator": "=",
-                            "value": "all"
-                        }
-                    ]
-                },
-                {
-                    "groupBy": [
-                        {
-                            "params": [
-                                "simulation"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group1"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group2"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "request"
-                            ],
-                            "type": "tag"
-                        }
-                    ],
-                    "hide": true,
-                    "measurement": "gatling",
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "refId": "F",
-                    "resultFormat": "table",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "count"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "sum"
-                            },
-                            {
-                                "params": [
-                                    "OK"
-                                ],
-                                "type": "alias"
-                            }
-                        ]
-                    ],
-                    "tags": [
-                        {
-                            "key": "status",
-                            "operator": "=",
-                            "value": "ok"
-                        }
-                    ]
-                },
-                {
-                    "groupBy": [
-                        {
-                            "params": [
-                                "simulation"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group1"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "group2"
-                            ],
-                            "type": "tag"
-                        },
-                        {
-                            "params": [
-                                "request"
-                            ],
-                            "type": "tag"
-                        }
-                    ],
-                    "hide": true,
-                    "measurement": "gatling",
-                    "orderByTime": "ASC",
-                    "policy": "default",
-                    "query": "SELECT min(\"min\") AS \"Min\", percentile(\"percentiles50\", 50) AS \"50th pct\", percentile(\"percentiles75\", 75) AS \"75th pct\", percentile(\"percentiles95\", 95) AS \"95th pct\", percentile(\"percentiles99\", 99) AS \"99th pct\", max(\"max\") AS \"Max\", mean(\"mean\") AS \"Mean\", stddev(\"percentiles75\") AS \"Std Dev\" FROM \"gatling\" WHERE (\"status\" = 'all') AND $timeFilter GROUP BY \"simulation\", \"group1\", \"group2\", \"request\"",
-                    "rawQuery": false,
-                    "refId": "G",
-                    "resultFormat": "table",
-                    "select": [
-                        [
-                            {
-                                "params": [
-                                    "min"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "min"
-                            },
-                            {
-                                "params": [
-                                    "Min"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "percentiles50"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [
-                                    "50"
-                                ],
-                                "type": "percentile"
-                            },
-                            {
-                                "params": [
-                                    "50th pct"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "percentiles75"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [
-                                    "75"
-                                ],
-                                "type": "percentile"
-                            },
-                            {
-                                "params": [
-                                    "75th pct"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "percentiles95"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [
-                                    "95"
-                                ],
-                                "type": "percentile"
-                            },
-                            {
-                                "params": [
-                                    "95th pct"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "percentiles99"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [
-                                    "99"
-                                ],
-                                "type": "percentile"
-                            },
-                            {
-                                "params": [
-                                    "99th pct"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "max"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "max"
-                            },
-                            {
-                                "params": [
-                                    "Max"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "mean"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "mean"
-                            },
-                            {
-                                "params": [
-                                    "Mean"
-                                ],
-                                "type": "alias"
-                            }
-                        ],
-                        [
-                            {
-                                "params": [
-                                    "mean"
-                                ],
-                                "type": "field"
-                            },
-                            {
-                                "params": [],
-                                "type": "stddev"
-                            },
-                            {
-                                "params": [
-                                    "Std Dev"
-                                ],
-                                "type": "alias"
-                            }
-                        ]
-                    ],
-                    "tags": [
-                        {
-                            "key": "status",
-                            "operator": "=",
-                            "value": "all"
-                        }
-                    ]
-                }
-            ],
-            "title": "Statistics",
-            "transform": "table",
-            "type": "table"
         },
         {
             "collapsed": true,
@@ -1254,7 +1289,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 47
+                "y": 1
             },
             "id": 54,
             "panels": [
@@ -1263,7 +1298,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 15,
@@ -1396,7 +1431,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 48
+                "y": 2
             },
             "id": 52,
             "panels": [
@@ -1405,7 +1440,7 @@
                     "bars": true,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 15,
@@ -1521,7 +1556,7 @@
                     "bars": true,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 15,
@@ -1649,7 +1684,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "editable": true,
                     "error": false,
                     "fill": 7,
@@ -1975,7 +2010,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 49
+                "y": 3
             },
             "id": 50,
             "panels": [
@@ -1984,7 +2019,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "editable": true,
                     "error": false,
                     "fill": 1,
@@ -2201,7 +2236,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "editable": true,
                     "error": false,
                     "fill": 6,
@@ -2427,7 +2462,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 15,
@@ -2561,7 +2596,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 15,
@@ -2700,7 +2735,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 50
+                "y": 4
             },
             "id": 48,
             "panels": [
@@ -2709,7 +2744,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 15,
@@ -2842,7 +2877,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 51
+                "y": 5
             },
             "id": 46,
             "panels": [
@@ -2851,7 +2886,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 15,
@@ -3010,7 +3045,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 52
+                "y": 6
             },
             "id": 44,
             "panels": [
@@ -3019,7 +3054,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "editable": true,
                     "error": false,
                     "fill": 1,
@@ -3268,7 +3303,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 53
+                "y": 7
             },
             "id": 42,
             "panels": [
@@ -3277,7 +3312,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "editable": true,
                     "error": false,
                     "fill": 1,
@@ -3464,7 +3499,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "editable": true,
                     "error": false,
                     "fill": 1,
@@ -3668,7 +3703,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 54
+                "y": 8
             },
             "id": 40,
             "panels": [
@@ -3677,7 +3712,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "editable": true,
                     "error": false,
                     "fill": 1,
@@ -3792,7 +3827,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 19,
@@ -3923,7 +3958,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 19,
@@ -4059,7 +4094,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 55
+                "y": 9
             },
             "id": 38,
             "panels": [
@@ -4068,7 +4103,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "description": "Чтобы оценить количество операций, которые были выполнены на каждый момент времени. Количество объектов, которые были созданы. Или количество записей в логе, об успешном выполнении операции, которые стоит ожидать.",
                     "fill": 1,
                     "gridPos": {
@@ -4204,7 +4239,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "fill": 1,
                     "gridPos": {
                         "h": 19,
@@ -4335,7 +4370,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "InfluxDB",
+                    "datasource": "${DS_GATLING}",
                     "description": "Чтобы оценить количество событий в логе ошибок, которые стоит ожидать. Чтобы попробовать скоррелировать графики ошибок по запросам с графиками текстов ошибок на стороне системы",
                     "fill": 1,
                     "gridPos": {
@@ -4479,13 +4514,8 @@
         "list": [
             {
                 "allValue": null,
-                "current": {
-                    "isNone": true,
-                    "text": "None",
-                    "value": ""
-                },
-                "datasource": "InfluxDB",
-                "definition": "",
+                "current": {},
+                "datasource": "${DS_GATLING}",
                 "hide": 0,
                 "includeAll": false,
                 "label": "request",
@@ -4495,7 +4525,6 @@
                 "query": "SHOW TAG VALUES WITH KEY = \"request\"",
                 "refresh": 2,
                 "regex": "",
-                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "",
                 "tags": [],
@@ -4507,9 +4536,8 @@
                 "allValue": null,
                 "current": {
                     "selected": true,
-                    "tags": [],
-                    "text": "30",
-                    "value": "30"
+                    "text": "5",
+                    "value": "5"
                 },
                 "hide": 0,
                 "includeAll": false,
@@ -4523,7 +4551,7 @@
                         "value": "1"
                     },
                     {
-                        "selected": false,
+                        "selected": true,
                         "text": "5",
                         "value": "5"
                     },
@@ -4533,7 +4561,7 @@
                         "value": "10"
                     },
                     {
-                        "selected": true,
+                        "selected": false,
                         "text": "30",
                         "value": "30"
                     },
@@ -4544,7 +4572,6 @@
                     }
                 ],
                 "query": "1,5,10,30,60",
-                "skipUrlSync": false,
                 "type": "custom"
             },
             {
@@ -4552,8 +4579,8 @@
                 "auto_count": 10,
                 "auto_min": "5s",
                 "current": {
-                    "text": "30s",
-                    "value": "30s"
+                    "text": "5s",
+                    "value": "5s"
                 },
                 "hide": 0,
                 "label": "granularity",
@@ -4565,7 +4592,7 @@
                         "value": "$__auto_interval_g"
                     },
                     {
-                        "selected": false,
+                        "selected": true,
                         "text": "5s",
                         "value": "5s"
                     },
@@ -4575,7 +4602,7 @@
                         "value": "10s"
                     },
                     {
-                        "selected": true,
+                        "selected": false,
                         "text": "30s",
                         "value": "30s"
                     },
@@ -4632,13 +4659,12 @@
                 ],
                 "query": "5s,10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
                 "refresh": 2,
-                "skipUrlSync": false,
                 "type": "interval"
             }
         ]
     },
     "time": {
-        "from": "now-15m",
+        "from": "now-1h",
         "to": "now"
     },
     "timepicker": {
@@ -4670,5 +4696,6 @@
     "timezone": "browser",
     "title": "Gatling Report",
     "uid": "ydV3WAhmk",
-    "version": 1
+    "version": 28,
+    "description": "Gatling dashboard with parameters: granularity (1s, 5s, ...) and request filter"
 }
